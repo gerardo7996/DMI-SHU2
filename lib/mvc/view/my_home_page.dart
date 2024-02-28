@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '/mvc/controller/controller.dart';
 import '/mvc/view/page_registro.dart';
+import '/mvc/view/page_inicio.dart';
+
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -117,11 +120,13 @@ class _FormExampleState extends State<FormExample> {
               _password = value;
             },
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0),
+          const SizedBox(
+            height: 15,
+          ),
+          Center(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 4, 125, 4),
+                backgroundColor: const Color.fromARGB(255, 4, 125, 4),
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
@@ -132,44 +137,107 @@ class _FormExampleState extends State<FormExample> {
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
                 if (_formKey.currentState!.validate()) {
-                  print('Correo Electrónico: $_email');
-                  print('Contraseña: $_password');
-
                   // Llamada a la función signUpUser del AuthService
                   final authService = AuthService();
                   final user = await authService.signInUser(_email, _password);
 
                   // Verificación del usuario y acciones adicionales si es necesario
                   if (user != null) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PageInicio()),
+                    );
                     // Usuario autenticado con éxito
-                    print('Usuario autenticado con éxito: ${user.id}');
+                    //_showAlert('Éxito', 'Usuario autenticado con éxito: ${user.id}');
                   } else {
                     // Manejar el caso en el que la autenticación falla
-                    print('Fallo de autenticación');
+                    _showAlert(
+                        'Error de Autentificación', 'Credenciales Invalidas');
                   }
                 }
               },
-              child: const Text('Iniciar Sesión'),
+              child: const Text('Ingresar'),
             ),
           ),
-          Center(
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 4, 125, 4),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        10.0), // Ajusta los bordes del botón
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          1.0), // Ajusta los bordes del botón
+                    ),
                   ),
-                ),
-                child: const Text("Regístrate"),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PageRegistro()));
-                }),
+                  child: const Text("Crear Cuenta"),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PageRegistro()));
+                  }),
+              const SizedBox(
+                width: 10,
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          1.0), // Ajusta los bordes del botón
+                    ),
+                  ),
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      FaIcon(
+                        FontAwesomeIcons.google,
+                        size: 20,
+                        color: Colors.red,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text("Ingresar con Google"),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const PageRegistro()));
+                  }),
+            ],
           ),
         ],
       ),
+    );
+  }
+
+  void _showAlert(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
