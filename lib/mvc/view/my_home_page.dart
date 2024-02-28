@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ecoti_app_mobile/mvc/controller/controller.dart';
-import 'package:ecoti_app_mobile/mvc/model/model.dart';
+import '/mvc/controller/controller.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -10,10 +9,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final Controller controller = Controller(
-    model: Model(),
-  );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,42 +23,135 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.only(bottom: 30),
-              child: Text('Click the buttons to change the counter.'),
+      body: cuerpo(),
+    );
+  }
+}
+
+Widget cuerpo() {
+  return Container(
+    decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: NetworkImage(
+                "https://i.pinimg.com/736x/c7/8d/82/c78d821fbb0a38da9e299eb92e2b8fe4.jpg"),
+            fit: BoxFit.cover)),
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          titulo(),
+          Container(
+              padding: const EdgeInsets.all(40.0), child: const FormExample()),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget titulo() {
+  return const Text(
+    "Iniciar Sesión",
+    style: TextStyle(
+        color: Colors.black, fontSize: 35.0, fontWeight: FontWeight.bold),
+  );
+}
+
+class FormExample extends StatefulWidget {
+  const FormExample({super.key});
+
+  @override
+  State<FormExample> createState() => _FormExampleState();
+}
+
+class _FormExampleState extends State<FormExample> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String _email = '';
+  String _password = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          TextFormField(
+            decoration: const InputDecoration(
+              icon: Icon(Icons.person),
+              hintText: 'Correo Electronico',
+              border: OutlineInputBorder(), // Bordes del campo de texto
+              filled: true,
+              fillColor: Colors.white,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                FloatingActionButton(
-                  onPressed: () {
-                    setState(
-                      controller.decrement,
-                    );
-                  },
-                  tooltip: 'Decrement',
-                  child: const Icon(Icons.remove),
-                ),
-                Text(
-                  controller.counter.toString(),
-                ),
-                FloatingActionButton(
-                  onPressed: () {
-                    setState(
-                      controller.increment,
-                    );
-                  },
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
-                ),
-              ],
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Porfavor Ingrese su Correo';
+              }
+              return null;
+            },
+            onChanged: (value) {
+              _email = value;
+            },
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          TextFormField(
+            obscureText: true,
+            decoration: const InputDecoration(
+              icon: Icon(Icons.key),
+              hintText: 'Contraseña',
+              border: OutlineInputBorder(), // Bordes del campo de texto
+              filled: true,
+              fillColor: Colors.white,
             ),
-          ],
-        ),
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Porfavor Ingrese su Contraseña';
+              }
+              return null;
+            },
+            onChanged: (value) {
+              _password = value;
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 4, 125, 4),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      10.0), // Ajusta los bordes del botón
+                ),
+              ),
+              onPressed: () async {
+                // Validate will return true if the form is valid, or false if
+                // the form is invalid.
+                if (_formKey.currentState!.validate()) {
+                  print('Correo Electrónico: $_email');
+                  print('Contraseña: $_password');
+
+                  // Llamada a la función signUpUser del AuthService
+                  final authService = AuthService();
+                  final user = await authService.signInUser(_email, _password);
+
+                  // Verificación del usuario y acciones adicionales si es necesario
+                  if (user != null) {
+                    // Usuario autenticado con éxito
+                    print('Usuario autenticado con éxito: ${user.id}');
+                  } else {
+                    // Manejar el caso en el que la autenticación falla
+                    print('Fallo de autenticación');
+                  }
+                }
+              },
+              child: const Text('Submit'),
+            ),
+          ),
+        ],
       ),
     );
   }
