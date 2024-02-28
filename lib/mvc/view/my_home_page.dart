@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/mvc/controller/controller.dart';
+import '/mvc/view/page_registro.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -148,8 +149,24 @@ class _FormExampleState extends State<FormExample> {
                   }
                 }
               },
-              child: const Text('Submit'),
+              child: const Text('Iniciar Sesión'),
             ),
+          ),
+          Center(
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 4, 125, 4),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        10.0), // Ajusta los bordes del botón
+                  ),
+                ),
+                child: const Text("Regístrate"),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PageRegistro()));
+                }),
           ),
         ],
       ),
