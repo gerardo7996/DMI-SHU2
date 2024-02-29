@@ -50,9 +50,42 @@ class _PageInicioState extends State<PageInicio> {
           ),
         ],
       ),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: ProductList(),
+      ),
     );
   }
 }
 
+class ProductList extends StatelessWidget {
+  final productService = ProductService();
 
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Product>>(
+      future: productService.getProducts(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error fetching products'));
+        } else {
+          final products = snapshot.data!;
+          return ListView.builder(
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final product = products[index];
+              return Card(
+                child: ListTile(
+                  title: Text(product.title),
+                  subtitle: Text(product.body),
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
+  }
 }
