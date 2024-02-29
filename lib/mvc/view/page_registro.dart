@@ -3,6 +3,8 @@ import '/mvc/controller/controller.dart';
 import '/mvc/view/my_home_page.dart';
 import '/mvc/view/page_inicio.dart';
 
+import '/mvc/model/model.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PageRegistro extends StatefulWidget {
@@ -144,6 +146,7 @@ class _FormExampleState extends State<FormExample> {
                   // Verificación del usuario y acciones adicionales si es necesario
                   if (user != null) {
                     Navigator.pushReplacement(
+                      // ignore: use_build_context_synchronously
                       context,
                       MaterialPageRoute(
                           builder: (context) => const PageInicio()),
@@ -162,58 +165,23 @@ class _FormExampleState extends State<FormExample> {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          1.0), // Ajusta los bordes del botón
-                    ),
+          Center(
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        1.0), // Ajusta los bordes del botón
                   ),
-                  child: const Text("Iniciar Sesión"),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MyHomePage()));
-                  }),
-              const SizedBox(
-                width: 10,
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          1.0), // Ajusta los bordes del botón
-                    ),
-                  ),
-                  child: const Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      FaIcon(
-                        FontAwesomeIcons.google,
-                        size: 20,
-                        color: Colors.red,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text("Registrarse con Google"),
-                    ],
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MyHomePage()));
-                  }),
-            ],
+                ),
+                child: const Text("Iniciar Sesión"),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MyHomePage()));
+                }),
           ),
         ],
       ),

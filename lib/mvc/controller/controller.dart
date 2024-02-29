@@ -67,5 +67,16 @@ class AuthService {
     }
     return null;
   }
-  // ... (other methods)}
+
+  UserModel? get currentUser {
+    final User? firebaseUser = _firebaseAuth.currentUser;
+    if (firebaseUser != null) {
+      return UserModel(
+        id: firebaseUser.uid,
+        email: firebaseUser.email ?? '',
+        displayName: firebaseUser.displayName ?? '',
+      );
+    }
+    return null;
+  }
 }
