@@ -1,4 +1,5 @@
 import 'package:ecoti_app_mobile/mvc/model/model.dart';
+import 'package:ecoti_app_mobile/mvc/view/page_productos.dart';
 import 'package:flutter/material.dart';
 import '/mvc/controller/controller.dart';
 import '/mvc/view/my_home_page.dart';
@@ -18,7 +19,11 @@ class PageInicio extends StatefulWidget {
 class _PageInicioState extends State<PageInicio> {
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final UserModel? currentUser = AuthService().currentUser;
+
+    String user = '';
+    String peso = '';
 
     return Scaffold(
       appBar: AppBar(
@@ -50,41 +55,125 @@ class _PageInicioState extends State<PageInicio> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: ProductList(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 4, 125, 4),
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(10.0), // Ajusta los bordes del botón
+              ),
+            ), // foreground
+            onPressed: () {
+              Navigator.pushReplacement(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PageProductos()));
+            },
+            child: const Text('Catalogo de Productos'),
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(40.0),
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.person),
+                      hintText: 'Usuario',
+                      border: OutlineInputBorder(), // Bordes del campo de texto
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Porfavor Ingrese un Usuario';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      user = value;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.scale),
+                      hintText: 'Usuario',
+                      border: OutlineInputBorder(), // Bordes del campo de texto
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Porfavor Ingrese una Cantidad';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      peso = value;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 4, 125, 4),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Ajusta los bordes del botón
+                        ),
+                      ),
+                      onPressed: () async {
+                        // Validate will return true if the form is valid, or false if
+                        // the form is invalid.
+                        if (formKey.currentState!.validate()) {
+                          // Llamada a la función signUpUser del AuthService
+                          _showAlert('Dato Introducido', user + peso);
+                        }
+                      },
+                      child: const Text('Ingresar'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-}
 
-class ProductList extends StatelessWidget {
-  final productService = ProductService();
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Product>>(
-      future: productService.getProducts(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error fetching products'));
-        } else {
-          final products = snapshot.data!;
-          return ListView.builder(
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return Card(
-                child: ListTile(
-                  title: Text(product.title),
-                  subtitle: Text(product.body),
-                ),
-              );
-            },
-          );
-        }
+  void _showAlert(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
       },
     );
   }
