@@ -2,7 +2,6 @@ import 'package:ecoti_app_mobile/mvc/model/model.dart';
 import 'package:ecoti_app_mobile/mvc/view/page_inicio.dart';
 import 'package:flutter/material.dart';
 import '/mvc/controller/controller.dart';
-import '/mvc/view/my_home_page.dart';
 
 import '/mvc/controller/producto_service.dart';
 import '/mvc/model/producto_model.dart';
@@ -60,9 +59,9 @@ class ProductList extends StatelessWidget {
       future: productService.getProducts(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error fetching products'));
+          return const Center(child: Text('Error fetching products'));
         } else {
           final products = snapshot.data!;
           return ListView.builder(
