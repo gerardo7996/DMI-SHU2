@@ -7,8 +7,6 @@ import '/mvc/view/my_home_page.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 class PageInicio extends StatefulWidget {
   const PageInicio({super.key});
 
@@ -73,8 +71,7 @@ class _PageInicioState extends State<PageInicio> {
               Navigator.pushReplacement(
                   // ignore: use_build_context_synchronously
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const PageProductos()));
+                  MaterialPageRoute(builder: (context) => ProductListScreen()));
             },
             child: const Text('Catalogo de Productos'),
           ),

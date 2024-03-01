@@ -1,15 +1,13 @@
 class Product {
-  final int id;
+  final String id;
   final String title;
-  final String body;
+  final double price;
+  final String imageUrl;
 
-  Product({required this.id, required this.title, required this.body});
-
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-      id: json['id'],
-      title: json['title'],
-      body: json['body'],
-    );
-  }
+  Product({
+    required this.id,
+    required this.title,
+    required this.price,
+    required this.imageUrl,
+  });
 }

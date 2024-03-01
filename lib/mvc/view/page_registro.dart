@@ -3,10 +3,6 @@ import '/mvc/controller/controller.dart';
 import '/mvc/view/my_home_page.dart';
 import '/mvc/view/page_inicio.dart';
 
-import '/mvc/model/model.dart';
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 class PageRegistro extends StatefulWidget {
   const PageRegistro({super.key});
 

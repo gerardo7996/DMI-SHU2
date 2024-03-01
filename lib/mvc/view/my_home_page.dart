@@ -3,10 +3,6 @@ import '/mvc/controller/controller.dart';
 import '/mvc/view/page_registro.dart';
 import '/mvc/view/page_inicio.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '/mvc/model/model.dart';
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 

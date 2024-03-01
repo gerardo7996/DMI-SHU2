@@ -4,8 +4,6 @@ import 'package:ecoti_app_mobile/mvc/view/page_inicio.dart';
 import 'package:flutter/material.dart';
 import '/mvc/controller/controller.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 class PageRegistros extends StatefulWidget {
   const PageRegistros({super.key});
 
@@ -25,6 +23,7 @@ class _PageRegistrosState extends State<PageRegistros> {
         titleTextStyle: const TextStyle(
           color: Color.fromRGBO(255, 255, 255, 1),
           fontSize: 15,
+          fontWeight: FontWeight.bold,
         ),
         actions: [
           Padding(
